@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatPage extends StatelessWidget {
   ChatPage({required this.email});
 
+  
   String? email;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;

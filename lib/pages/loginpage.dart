@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is LoginSuccess) {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(email: email)));
         } else if (state is LoginFailure) {
-          showSnackBar(context, "Something Went Wrong , Please Try Again Later");
+          showSnackBar(context, state.errMessage);
         }
       },
       child: ModalProgressHUD(
@@ -119,12 +119,6 @@ class _LoginPageState extends State<LoginPage> {
                                     builder: (context) => ChatPage(
                                           email: email,
                                         )));
-                          } on FirebaseAuthException catch (ex) {
-                            if (ex.code == 'user-not-found') {
-                              showSnackBar(context, ex.toString());
-                            } else if (ex.code == 'wrong-password') {
-                              showSnackBar(context, ex.toString());
-                            }
                           } catch (e) {
                             print(e.toString());
                             showSnackBar(context, e.toString());
