@@ -7,13 +7,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatPage extends StatelessWidget {
   ChatPage({required this.email});
 
-  static String id = 'Chat Page';
-
   String? email;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CollectionReference messages = FirebaseFirestore.instance.collection(kMessagesCollection);
+  CollectionReference messages = FirebaseFirestore.instance.collection(kMessagesCollection); // Collection of data base
 
   TextEditingController controller = TextEditingController();
   ScrollController _controller = ScrollController();
@@ -107,7 +105,7 @@ class ChatPage extends StatelessWidget {
             ),
           );
         } else {
-          return Text('Loading The Data .... ');
+          return Center(child: Text('Loading The Data .... '));
         }
       },
     );

@@ -8,7 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool isPassword;
 
   // Constructor with required parameters and optional `isPassword` parameter
-  CustomTextFormField({
+  CustomTextFormField({super.key, 
     required this.hintText,
     required this.prefixIcon,
     required this.onChanged,

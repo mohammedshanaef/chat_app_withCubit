@@ -3,14 +3,14 @@ import 'package:chat_scolar/components/custom_textfield.dart';
 import 'package:chat_scolar/constant.dart';
 import 'package:chat_scolar/helper/show_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});
-  static String id = "register page";
+
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();

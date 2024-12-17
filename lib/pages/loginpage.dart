@@ -11,7 +11,6 @@ import 'package:flutter/widgets.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginPage extends StatefulWidget {
-  static String id = "login page";
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
