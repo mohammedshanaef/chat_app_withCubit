@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "923889882065",
+    "project_id": "chat-scolar",
+    "storage_bucket": "chat-scolar.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923889882065:android:906795215d975a946306f0",
+        "android_client_info": {
+          "package_name": "com.example.chat_scolar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeItg3rGF_ua9RVVW84C3SWyVj5IfgYqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
