@@ -3,11 +3,14 @@ import 'package:chat_scolar/components/custom_textfield.dart';
 import 'package:chat_scolar/constant.dart';
 import 'package:chat_scolar/helper/show_snack_bar.dart';
 import 'package:chat_scolar/pages/chat_page.dart';
+import 'package:chat_scolar/pages/cubit/login_cubit/login_cubit.dart';
+import 'package:chat_scolar/pages/cubit/login_cubit/login_state.dart';
 import 'package:chat_scolar/pages/registerpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,132 +29,143 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: isLoading,
-      child: Scaffold(
-        backgroundColor: kPrimaryColor,
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 70,
-                  ),
-                  Image.asset('assets/images/scholar.png'),
-                  const Text(
-                    'Scholar Chat',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontFamily: 'Pacifico',
-                      fontStyle: FontStyle.italic,
+    return BlocListener<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is LoginLoading) {
+          isLoading = true;
+        } else if (state is LoginSuccess) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(email: email)));
+        } else if (state is LoginFailure) {
+          showSnackBar(context, "Something Went Wrong , Please Try Again Later");
+        }
+      },
+      child: ModalProgressHUD(
+        inAsyncCall: isLoading,
+        child: Scaffold(
+          backgroundColor: kPrimaryColor,
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 70,
                     ),
-                  ),
-                  SizedBox(
-                    height: 70,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white, fontSize: 24),
+                    Image.asset('assets/images/scholar.png'),
+                    const Text(
+                      'Scholar Chat',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontFamily: 'Pacifico',
+                        fontStyle: FontStyle.italic,
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  CustomTextFormField(
-                    onChanged: (data) {
-                      email = data;
-                    },
-                    hintText: 'Email',
-                    prefixIcon: Icon(
-                      Icons.email,
-                      color: Colors.white,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFormField(
-                    isPassword: true,
-                    onChanged: (data) {
-                      password = data;
-                    },
-                    hintText: 'Password',
-                    prefixIcon: Icon(
-                      Icons.password,
-                      color: Colors.white,
+                    SizedBox(
+                      height: 70,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                    onTap: () async {
-                      if (formKey.currentState!.validate()) {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        try {
-                          await loginUser();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Success Login")));
-                          Navigator.push(
+                    Row(
+                      children: [
+                        Text(
+                          'Login',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    CustomTextFormField(
+                      onChanged: (data) {
+                        email = data;
+                      },
+                      hintText: 'Email',
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextFormField(
+                      isPassword: true,
+                      onChanged: (data) {
+                        password = data;
+                      },
+                      hintText: 'Password',
+                      prefixIcon: Icon(
+                        Icons.password,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomButton(
+                      onTap: () async {
+                        if (formKey.currentState!.validate()) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          try {
+                            await loginUser();
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Success Login")));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatPage(
+                                          email: email,
+                                        )));
+                          } on FirebaseAuthException catch (ex) {
+                            if (ex.code == 'user-not-found') {
+                              showSnackBar(context, ex.toString());
+                            } else if (ex.code == 'wrong-password') {
+                              showSnackBar(context, ex.toString());
+                            }
+                          } catch (e) {
+                            print(e.toString());
+                            showSnackBar(context, e.toString());
+                          }
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+                      },
+                      text: 'Login',
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Don't Have An Account?",
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ChatPage(
-                                        email: email,
-                                      )));
-                        } on FirebaseAuthException catch (ex) {
-                          if (ex.code == 'user-not-found') {
-                            showSnackBar(context, ex);
-                          } else if (ex.code == 'wrong-password') {
-                            showSnackBar(context, ex);
-                          }
-                        } catch (e) {
-                          print(e.toString());
-                          showSnackBar(context, e as FirebaseAuthException?);
-                        }
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }
-                    },
-                    text: 'Login',
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Don't Have An Account?",
-                        style: TextStyle(color: Colors.white, fontSize: 13),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterPage(),
+                                builder: (context) => RegisterPage(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            '   Click To Register',
+                            style: TextStyle(
+                              color: Color(0xffc4e9c7),
+                              fontSize: 15,
                             ),
-                          );
-                        },
-                        child: Text(
-                          '   Click To Register',
-                          style: TextStyle(
-                            color: Color(0xffc4e9c7),
-                            fontSize: 15,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

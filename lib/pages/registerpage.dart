@@ -11,7 +11,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});
 
-
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -102,9 +101,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Register Success")));
                         } on FirebaseAuthException catch (ex) {
                           if (ex.code == "weak-password") {
-                            showSnackBar(context, ex);
+                            showSnackBar(context, ex.toString());
                           } else if (ex.code == "email-already-in-use") {
-                            showSnackBar(context, ex);
+                            showSnackBar(context, ex.toString());
                           }
                         } catch (e) {
                           print(e.toString());
