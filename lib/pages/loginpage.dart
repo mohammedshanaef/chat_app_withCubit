@@ -3,12 +3,12 @@ import 'package:chat_scolar/components/custom_textfield.dart';
 import 'package:chat_scolar/constant.dart';
 import 'package:chat_scolar/helper/show_snack_bar.dart';
 import 'package:chat_scolar/pages/chat_page.dart';
+import 'package:chat_scolar/pages/cubit/auth_cubit/auth_cubit.dart';
 import 'package:chat_scolar/pages/cubit/chat_cubit/chat_cubit.dart';
-import 'package:chat_scolar/pages/cubit/login_cubit/login_cubit.dart';
-import 'package:chat_scolar/pages/cubit/login_cubit/login_state.dart';
+
 import 'package:chat_scolar/pages/registerpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginLoading) {
           isLoading = true;
@@ -109,25 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                     CustomButton(
                       onTap: () async {
                         if (formKey.currentState!.validate()) {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          try {
-                            await loginUser();
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Success Login")));
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ChatPage(
-                                          email: email,
-                                        )));
-                          } catch (e) {
-                            print(e.toString());
-                            showSnackBar(context, e.toString());
-                          }
-                          setState(() {
-                            isLoading = false;
-                          });
+                          BlocProvider.of<AuthCubit>(context).loginUser(email: email!, password: password!);
                         }
                       },
                       text: 'Login',
@@ -168,10 +150,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  Future<void> loginUser() async {
-    var auth = FirebaseAuth.instance;
-    UserCredential userCred = await auth.signInWithEmailAndPassword(email: email!, password: password!);
   }
 }

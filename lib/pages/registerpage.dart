@@ -2,8 +2,8 @@ import 'package:chat_scolar/components/custom_button.dart';
 import 'package:chat_scolar/components/custom_textfield.dart';
 import 'package:chat_scolar/constant.dart';
 import 'package:chat_scolar/helper/show_snack_bar.dart';
-import 'package:chat_scolar/pages/cubit/register_cubit/register_cubit.dart';
-import 'package:chat_scolar/pages/cubit/register_cubit/register_state.dart';
+import 'package:chat_scolar/pages/cubit/auth_cubit/auth_cubit.dart';
+
 import 'package:chat_scolar/pages/loginpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubit, RegisterState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterLoading) {
           isLoading = true;
@@ -112,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         text: 'Register',
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            BlocProvider.of<RegisterCubit>(context).registerUser(email: email!, password: password!);
+                            BlocProvider.of<AuthCubit>(context).registerUser(email: email!, password: password!);
                           }
                         },
                       ),
