@@ -1,4 +1,5 @@
 import 'package:chat_scolar/firebase_options.dart';
+import 'package:chat_scolar/pages/cubit/chat_cubit/chat_cubit.dart';
 import 'package:chat_scolar/pages/cubit/login_cubit/login_cubit.dart';
 import 'package:chat_scolar/pages/cubit/register_cubit/register_cubit.dart';
 import 'package:chat_scolar/pages/loginpage.dart';
@@ -23,6 +24,9 @@ class ChatApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => RegisterCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ChatCubit(),
         ),
       ],
       child: MaterialApp(

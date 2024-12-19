@@ -3,6 +3,7 @@ import 'package:chat_scolar/components/custom_textfield.dart';
 import 'package:chat_scolar/constant.dart';
 import 'package:chat_scolar/helper/show_snack_bar.dart';
 import 'package:chat_scolar/pages/chat_page.dart';
+import 'package:chat_scolar/pages/cubit/chat_cubit/chat_cubit.dart';
 import 'package:chat_scolar/pages/cubit/login_cubit/login_cubit.dart';
 import 'package:chat_scolar/pages/cubit/login_cubit/login_state.dart';
 import 'package:chat_scolar/pages/registerpage.dart';
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         if (state is LoginLoading) {
           isLoading = true;
         } else if (state is LoginSuccess) {
+          BlocProvider.of<ChatCubit>(context).getMessages();
           Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(email: email)));
         } else if (state is LoginFailure) {
           showSnackBar(context, state.errMessage);

@@ -4,10 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Message {
   final String message;
   final String id;
+  final DateTime createdAt;
 
-  Message(this.message, this.id);
+  Message({required this.message, required this.id, required this.createdAt});
 
   factory Message.fromJson(jsonData) {
-    return Message(jsonData[kMessage], jsonData[kId]);
+    return Message(
+      message: jsonData[kMessage] ?? '',
+      id: jsonData['id'] ?? '',
+      createdAt: (jsonData[kCreatedAt] as Timestamp).toDate(),
+    );
   }
 }
