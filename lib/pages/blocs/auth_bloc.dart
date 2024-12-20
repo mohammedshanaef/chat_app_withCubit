@@ -35,3 +35,70 @@ class AuthBloc extends Bloc<AuthEvenet, AuthState> {
     });
   }
 }
+// class AuthBloc extends Bloc<AuthEvent, AuthState> {
+//   AuthBloc() : super(AuthInitial()) {
+//     on<LoginEvent>((event, emit) async {
+//       emit(LoginLoading());
+//       try {
+//         // Login :)
+//         var auth = FirebaseAuth.instance;
+//         await auth.signInWithEmailAndPassword(
+//           email: event.email,
+//           password: event.password,
+//         );
+//         emit(LoginSuccess());
+//       } catch (e) {
+//         emit(LoginFailure(errMessage: e.toString()));
+//       }
+//     });
+
+//     on<LogoutEvent>((event, emit) async {
+//       emit(LogoutLoading());
+//       try {
+//         var auth = FirebaseAuth.instance;
+//         await auth.signOut(); // Logout :)
+//         emit(LogoutSuccess());
+//       } catch (e) {
+//         emit(LogoutFailure(errMessage: e.toString()));
+//       }
+//     });
+
+//     on<LogoutWithClearDataEvent>((event, emit) async {
+//       emit(LogoutLoading());
+//       try {
+//         var auth = FirebaseAuth.instance;
+//         await auth.signOut(); // logout
+//         // clear whole data :)
+//         await clearLocalData();
+//         emit(LogoutSuccess());
+//       } catch (e) {
+//         emit(LogoutFailure(errMessage: e.toString()));
+//       }
+//     });
+
+//     on<ForceLogoutEvent>((event, emit) {
+//       emit(ForceLogout(reason: event.reason));
+//     });
+
+//     on<ChangePasswordEvent>((event, emit) async {
+//       emit(ChangePasswordLoading());
+//       try {
+//         var auth = FirebaseAuth.instance.currentUser;
+
+//         if (auth != null) {
+//           // تغيير كلمة المرور
+//           await auth.updatePassword(event.newPassword);
+//           emit(ChangePasswordSuccess());
+//         } else {
+//           emit(ChangePasswordFailure(errMessage: "User not logged in"));
+//         }
+//       } catch (e) {
+//         emit(ChangePasswordFailure(errMessage: e.toString()));
+//       }
+//     });
+//   }
+
+//   Future<void> clearLocalData() async {
+//     // clear Data Stored
+//   }
+// }
