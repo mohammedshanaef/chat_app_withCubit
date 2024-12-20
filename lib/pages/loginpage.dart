@@ -2,6 +2,8 @@ import 'package:chat_scolar/components/custom_button.dart';
 import 'package:chat_scolar/components/custom_textfield.dart';
 import 'package:chat_scolar/constant.dart';
 import 'package:chat_scolar/helper/show_snack_bar.dart';
+import 'package:chat_scolar/pages/blocs/auth_bloc.dart';
+import 'package:chat_scolar/pages/blocs/auth_event.dart';
 import 'package:chat_scolar/pages/chat_page.dart';
 import 'package:chat_scolar/pages/cubit/auth_cubit/auth_cubit.dart';
 import 'package:chat_scolar/pages/cubit/chat_cubit/chat_cubit.dart';
@@ -30,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is LoginLoading) {
           isLoading = true;
@@ -109,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                     CustomButton(
                       onTap: () async {
                         if (formKey.currentState!.validate()) {
-                          BlocProvider.of<AuthCubit>(context).loginUser(email: email!, password: password!);
+                          BlocProvider.of<AuthBloc>(context).add(LoginEvent(email: email!, password: password!));
                         }
                       },
                       text: 'Login',

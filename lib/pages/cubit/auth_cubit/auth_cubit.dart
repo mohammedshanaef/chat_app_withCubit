@@ -51,5 +51,9 @@ class AuthCubit extends Cubit<AuthState> {
       // Handle generic exceptions
       emit(RegisterFailure(errMessage: 'Something Went Wrong, Please Try Again Later'));
     }
+    onChange(Change<AuthState> change) {
+      super.onChange(change);
+      print(change);
+    }
   }
 }
